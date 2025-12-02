@@ -39,4 +39,4 @@ build/
 .DS_Store
 
 ### Don't publish your puzzles ###
-/src/main/resources/**/puzzle-input/
+/src/main/resources/puzzleinputs/

@@ -1,11 +1,10 @@
 package org.tlammers
 
-import org.tlammers.utils.FileUtils
 import kotlin.math.abs
 
 const val DIAL_STARTING_NUMBER = 50
 fun main() {
-    val inputFileName = "/day01/puzzle-input/part1-input.txt"
+    val inputFileName = "/puzzleinputs/day01.txt"
     val lines = FileUtils.readLines(inputFileName)
     val numbers = convertLinesToNumbers(lines)
 
