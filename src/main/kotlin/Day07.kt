@@ -2,6 +2,7 @@ package org.tlammers
 
 import org.tlammers.Day07.Constants.Symbols
 import org.tlammers.FileUtils.Companion.readLines
+import java.math.BigInteger
 import kotlin.collections.map
 
 class Day07 {
@@ -22,7 +23,7 @@ class Day07 {
 
     companion object {
         fun partOne(input: List<String>): Int {
-            val arrayOfBeamedStrings = mutableListOf<String>(input[0])
+            val arrayOfBeamedStrings = mutableListOf(input[0])
             val mutableInput = ArrayList(input)
             var numberOfSplits = 0
 
@@ -60,6 +61,35 @@ class Day07 {
             return numberOfSplits
         }
 
+        fun part2(grid: List<String>): Int {
+            val rowCount = grid.size
+            val colCount = grid[0].length
+
+            val start = grid.indices
+                .firstNotNullOf { r ->
+                    grid[r].indexOf(Symbols.START.char).takeIf { it != -1 }?.let { r to it }
+                }
+
+            val memo = HashMap<Pair<Int, Int>, Int>()
+
+            fun countTimelinesFrom(position: Pair<Int, Int>): Int =
+                memo.getOrPut(position) {
+                    var (row, col) = position
+
+                    while (++row < rowCount) {
+                        if (grid[row][col] == Symbols.SPLITTER.char) {
+                            var total = 0
+                            if (col > 0) total += countTimelinesFrom(row to col - 1)
+                            if (col + 1 < colCount) total += countTimelinesFrom(row to col + 1)
+                            return@getOrPut total
+                        }
+                    }
+
+                    1
+                }
+
+            return countTimelinesFrom(start)
+        }
     }
 }
 
@@ -90,5 +120,12 @@ fun main() {
 
     val partOneSolution = Day07.partOne(input)
     println("Part 1 solution: $partOneSolution")
+
+    val partTwoTest = Day07.part2(sampleInput)
+    println("Number of timelines - part 2 test : $partTwoTest")
+
+    // this is incorrect somewhere
+    val partTwo = Day07.part2(input)
+    println("Part 2 solution: $partTwo")
 
 }
